@@ -1,5 +1,8 @@
 package com.chaoger.controller;
 
+import com.chaoger.dao.UserDao;
+import com.chaoger.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,8 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+    @Autowired
+    private UserDao userDao;
+
+
+    
+
     @RequestMapping("/hello")
     public String index(){
-        return "Hello World !";
+        User user = userDao.selectUserById(1);
+        return user.toString();
+
     }
 }
