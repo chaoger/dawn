@@ -3,20 +3,22 @@ package com.chaoger;
 import com.alibaba.druid.pool.DruidDataSource;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 
+@EnableEurekaServer
 @SpringBootApplication
 @MapperScan(basePackages = {"com.chaoger.dao"})
 public class DawnApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(DawnApplication.class, args);
+		new SpringApplicationBuilder(DawnApplication.class).run(args);
 	}
 
 
@@ -24,7 +26,7 @@ public class DawnApplication {
 	private Environment env;
 
 	//destroy-method="close"的作用是当数据库连接不使用的时候,就把该连接重新放到数据池中,方便下次使用调用.
-	@Bean(destroyMethod =  "close")
+	@Bean
 	public DataSource dataSource() {
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setUrl(env.getProperty("spring.datasource.url"));
